@@ -1,0 +1,114 @@
+CREATE TABLE CUSTOMERS_MASTER_23(
+C_ID Number(2) PRIMARY KEY,
+CNAME Varchar2(25),
+CONTACTNAME Varchar2(25),
+ADDRESS Varchar2(30),
+CITY Varchar2(20),
+POSTALCODE Number(6),
+COUNTRY Varchar2(10));
+
+DESC CUSTOMERS_MASTER_23;
+ Name Null? Type
+ ----------------------------------------- -------- ----------------------------
+ C_ID NOT NULL NUMBER(2)
+ CNAME VARCHAR2(25)
+ CONTACTNAME VARCHAR2(25)
+ ADDRESS VARCHAR2(30)
+ CITY VARCHAR2(20)
+ POSTALCODE NUMBER(6)
+ COUNTRY VARCHAR2(10)
+
+INSERT INTO CUSTOMERS_MASTER_23 VALUES(1, 'Alfrede Futter' , 'Maria Anders' , 'Obere Str.57' , 'Berlin' , 12209 , 'Germany');
+INSERT INTO CUSTOMERS_MASTER_23 VALUES(2, 'Ana Helados' , 'Ana Trujillo' , 'Avda. Construction 2222 ' , 'Mexico D.F' , 05021 , 'Mexico');
+INSERT INTO CUSTOMERS_MASTER_23 VALUES(3, 'Antonio Moreno' , 'Antonio Moreno' , 'Mataderos 2312' , 'Mexico D.F' , 05023 , 'Mexico');
+
+SET LINESIZE 300;
+SQL> SELECT * FROM CUSTOMERS_MASTER_23;
+
+      C_ID CNAME CONTACTNAME ADDRESS CITY POSTALCODE COUNTRY
+---------- ------------------------- ------------------------- ------------------------------ -------------------- ---------- ----------
+         1 Alfrede Futter Maria Anders Obere Str.57 Berlin 12209 Germany
+         2 Ana Helados Ana Trujillo Avda. Construction 2222 Mexico D.F 5021 Mexico
+         3 Antonio Moreno Antonio Moreno Mataderos 2312 Mexico D.F 5023 Mexico
+
+
+
+
+
+CREATE TABLE SUPPLIERS_MASTER_23(
+S_ID Number(2) PRIMARY KEY,
+SNAME Varchar2(25),
+CONTACTNAME Varchar2(25),
+ADDRESS Varchar2(30),
+CITY Varchar2(20),
+POSTALCODE Number(6),
+COUNTRY Varchar2(10));
+
+DESC SUPPLIERS_MASTER_23;
+ Name Null? Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ S_ID NOT NULL NUMBER(2)
+ SNAME VARCHAR2(25)
+ CONTACTNAME VARCHAR2(25)
+ ADDRESS VARCHAR2(30)
+ CITY VARCHAR2(20)
+ POSTALCODE NUMBER(6)
+ COUNTRY VARCHAR2(10)
+
+INSERT INTO SUPPLIERS_MASTER_23 VALUES(1 , 'Exotic Liquid' , 'Charlotte Cooper' , '49 Gilbert St.' , 'Berlin' , 12209 , 'Germany');
+INSERT INTO SUPPLIERS_MASTER_23 VALUES(2 , 'NewOrleans Cajun Delights' , 'Shelley Burke' , 'P.O. BOX 73934' , 'Mexico D.F' , 05023 , 'Mexico');
+INSERT INTO SUPPLIERS_MASTER_23 VALUES(3 , 'Grandma Kellys' , 'Regina Murphy' , '707 Oxford Rd.' , 'Ann Arbor' , 48104 , 'USA');
+
+ SELECT * FROM SUPPLIERS_MASTER_23;
+
+      S_ID SNAME CONTACTNAME ADDRESS CITY POSTALCODE COUNTRY
+---------- ------------------------- ------------------------- ------------------------------ -------------------- ---------- ----------
+         1 Exotic Liquid Charlotte Cooper 49 Gilbert St. Berlin 12209 Germany
+         2 NewOrleans Cajun Delights Shelley Burke P.O. BOX 73934 Mexico D.F 5023 Mexico
+         3 Grandma Kellys Regina Murphy 707 Oxford Rd. Ann Arbor 48104 USA
+
+
+
+
+
+
+QUERIES:
+
+A> SELECT DISTINCT CITY FROM CUSTOMERS_MASTER_23 UNION SELECT DISTINCT CITY FROM SUPPLIERS_MASTER_23 ;
+
+  CITY
+--------------------
+Berlin
+Mexico D.F
+Ann Arbor
+
+B> SELECT CITY FROM CUSTOMERS_MASTER_23 UNION ALL SELECT CITY FROM SUPPLIERS_MASTER_23;
+
+CITY
+--------------------
+Berlin
+Mexico D.F
+Mexico D.F
+Berlin
+Mexico D.F
+Ann Arbor
+
+C> SELECT CITY FROM CUSTOMERS_MASTER_23 WHERE COUNTRY = 'Germany' UNION SELECT CITY FROM SUPPLIERS_MASTER_23 WHERE COUNTRY = 'Germany';
+
+CITY
+--------------------
+Berlin
+
+D> SELECT C.CNAME , S.SNAME FROM CUSTOMERS_MASTER_23 C JOIN SUPPLIERS_MASTER_23 S ON C.CITY = S.CITY;
+
+CNAME SNAME
+------------------------- -------------------------
+Alfrede Futter Exotic Liquid
+Ana Helados NewOrleans Cajun Delights
+Antonio Moreno NewOrleans Cajun Delights
+
+E> SELECT DISTINCT S.COUNTRY FROM SUPPLIERS_MASTER_23 S WHERE S.COUNTRY NOT IN(SELECT DISTINCT COUNTRY FROM CUSTOMERS_MASTER_23);
+
+COUNTRY
+----------
+USA
